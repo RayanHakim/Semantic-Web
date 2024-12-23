@@ -1,0 +1,1761 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2/"
+     xml:base="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:obat_herbal2="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2">
+        <rdfs:comment>PREFIX :&lt;http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+SELECT ?obat_herbal ?metode_penyimpanan ?cara_pengolahan ?senyawa_aktif?indikasi_penyakit
+	WHERE { 
+	?Obat_Herbal:nama_obat ?obat_herbal.
+	?Obat_Herbal:disimpan_pada_tempat ?penyimpanan.
+	?penyimpanan:cara_menyimpan ?metode_penyimpanan.
+	?Obat_Herbal:diolah_dengan_cara ?cara.
+	?cara:deskripsi_pengolahan ?cara_pengolahan.
+	?Obat_Herbal:mengandung ?senyawa.
+	?senyawa:nama_senyawa ?senyawa_aktif.
+                        ?Obat_Herbal:mengobati ?ngobatin.
+                        ?ngobatin:nama_penyakit ?indikasi_penyakit.
+	}
+	ORDER BY ?Obat_Herbal
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Mendapatkan daftar senyawa aktif dengan indikasi penyakit yang diobati
+
+PREFIX :&lt;http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+SELECT ?senyawa_aktif ?nama_obat ?indikasi_penyakit
+WHERE { ?Obat_Herbal :nama_obat ?nama_obat.
+                  ?Obat_Herbal :mengandung ?senyawa.
+                  ?senyawa :nama_senyawa ?senyawa_aktif.
+                  ?Obat_Herbal :mengobati ?penyakit.
+                  ?penyakit :nama_penyakit ?indikasi_penyakit.
+}
+ORDER BY  ?senyawa_aktif
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Filter Berdasarkan Nama Obat Herbal
+
+PREFIX :&lt;http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+SELECT ?nama_obat ?metode_penyimpanan ?cara_pengolahan ?senyawa_aktif ?indikasi_penyakit
+WHERE {
+	?Obat_Herbal :nama_obat ?nama_obat.
+	?Obat_Herbal :disimpan_pada_tempat ?tempat.
+	?tempat :cara_menyimpan ?metode_penyimpanan.
+	?Obat_Herbal :diolah_dengan_cara ?cara.
+	?cara :deskripsi_pengolahan ?cara_pengolahan.
+	?Obat_Herbal :mengandung ?senyawa.
+	?senyawa :nama_senyawa ?senyawa_aktif.
+	?Obat_Herbal :mengobati ?penyakit.
+	?penyakit :nama_penyakit ?indikasi_penyakit.
+
+	FILTER regex(?nama_obat, &quot;Temulawak&quot;, &quot;i&quot;)
+}
+ORDER BY ?nama_obat
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Filter Berdasarkan Indikasi Penyakit
+
+PREFIX :&lt;http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+SELECT ?nama_obat ?senyawa_aktif ?indikasi_penyakit
+WHERE {
+	?Obat_Herbal :nama_obat ?nama_obat.
+	?Obat_Herbal :mengandung ?senyawa.
+	?senyawa :nama_senyawa ?senyawa_aktif.
+	?Obat_Herbal :mengobati ?penyakit.
+	?penyakit :nama_penyakit ?indikasi_penyakit.
+
+	FILTER regex(?indikasi_penyakit, &quot;Diabetes&quot;, &quot;i&quot;)
+}
+ORDER BY ?nama_obat
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Menampilkan metode penyimpanan dengan jumlah obat herbal lebih dari 7
+
+PREFIX :&lt;http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+SELECT ?metode_penyimpanan (COUNT(?nama_obat) AS ?jumlah_obat)
+WHERE {
+	?Obat_Herbal :nama_obat ?nama_obat.
+	?Obat_Herbal :disimpan_pada_tempat ?tempat.
+	?tempat :cara_menyimpan ?metode_penyimpanan.
+}
+GROUP BY ?metode_penyimpanan
+HAVING (?jumlah_obat  &gt;  7)
+ORDER BY DESC(?jumlah_obat)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Menampilkan 10 hasil pertama obat herbal
+
+PREFIX :&lt;http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+SELECT ?nama_obat ?senyawa_aktif
+WHERE {
+	?Obat_Herbal :nama_obat ?nama_obat.
+	?Obat_Herbal :mengandung ?senyawa.
+	?senyawa :nama_senyawa ?senyawa_aktif.
+}
+ORDER BY ?nama_obat
+LIMIT 10 OFFSET 0
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Cara pengolahan obat tertentu
+
+PREFIX :&lt;http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+SELECT ?nama_obat ?cara_pengolahan
+WHERE {
+	?Obat_Herbal :nama_obat ?nama_obat.
+	?Obat_Herbal :diolah_dengan_cara ?cara.
+	?cara :deskripsi_pengolahan ?cara_pengolahan.
+}
+ORDER BY ?nama_obat
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bahan_dari_akar -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bahan_dari_akar">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_akar"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Akar"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bahan_dari_biji -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bahan_dari_biji">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_biji"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Biji"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bahan_dari_buah -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bahan_dari_buah">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_buah"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Buah"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bahan_dari_daun -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bahan_dari_daun">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_daun"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Daun"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_dari -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_dari">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuknya"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bentuk"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuknya -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuknya">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bentuk"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#berfungsi_sebagai -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#berfungsi_sebagai">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#fungsi_dari"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#cara_penyajian_dari -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#cara_penyajian_dari">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#disajikan_dengan"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penggunaan"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diobati_dengan -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diobati_dengan">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mengobati"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diolah_dengan_cara -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diolah_dengan_cara">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pengolahan_dari"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Cara_Pengolahan"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diolah_menjadi -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diolah_menjadi">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#olahan_dari"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Jenis"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#disajikan_dengan -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#disajikan_dengan">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penggunaan"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#disimpan_pada_tempat -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#disimpan_pada_tempat">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#merupakan_tempat_penyimpanan"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penyimpanan"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#efek_dari -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#efek_dari">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mempunyai_efek"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Efek_Samping"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#fungsi_dari -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#fungsi_dari">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kandungan_dari -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kandungan_dari">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mengandung"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#memiliki_dosis -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#memiliki_dosis">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#merupakan_dosis"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Dosis_Penggunaan"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mempunyai_efek -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mempunyai_efek">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Efek_Samping"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mengandung -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mengandung">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mengobati -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mengobati">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#merupakan_dosis -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#merupakan_dosis">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Dosis_Penggunaan"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#merupakan_tempat_penyimpanan -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#merupakan_tempat_penyimpanan">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penyimpanan"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#olahan_dari -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#olahan_dari">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Jenis"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pengolahan_dari -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pengolahan_dari">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Cara_Pengolahan"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_akar -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_akar">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Akar"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_biji -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_biji">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Biji"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_buah -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_buah">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Buah"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_daun -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#terbuat_dari_daun">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Daun"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#berbentuk -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#berbentuk"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#cara_menyimpan -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#cara_menyimpan"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#cara_penggunaan -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#cara_penggunaan"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#deskripsi_pengolahan -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#deskripsi_pengolahan"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#efek_samping_obat -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#efek_samping_obat"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jenis_obat -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jenis_obat"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kegunaan -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kegunaan"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_akar -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_akar"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_biji -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_biji"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_buah -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_buah"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_daun -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_daun"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_obat -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_obat"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_penyakit -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_penyakit"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_senyawa -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nama_senyawa"/>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#topDataProperty -->
+
+    <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#topDataProperty">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Akar -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Akar">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bahan"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bahan -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bahan"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bentuk -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bentuk"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Biji -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Biji">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bahan"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Buah -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Buah">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bahan"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Cara_Pengolahan -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Cara_Pengolahan"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Daun -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Daun">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bahan"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Dosis_Penggunaan -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Dosis_Penggunaan"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Efek_Samping -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Efek_Samping"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Jenis -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Jenis"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penggunaan -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penggunaan"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penyimpanan -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penyimpanan"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#alergi -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#alergi">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Efek_Samping"/>
+        <obat_herbal2:efek_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:efek_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:efek_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:efek_samping_obat>Alergi</obat_herbal2:efek_samping_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#analgesik -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#analgesik">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:kegunaan>Analgesik</obat_herbal2:kegunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#andrografolid -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#andrografolid">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:nama_senyawa>Andrografolid</obat_herbal2:nama_senyawa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antibiotik -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antibiotik">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:kegunaan>Antibiotik</obat_herbal2:kegunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antidiabetik -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antidiabetik">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:kegunaan>Antidiabetik</obat_herbal2:kegunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antidiare -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antidiare">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal"/>
+        <obat_herbal2:kegunaan>Antidiare</obat_herbal2:kegunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antiinflamasi -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antiinflamasi">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:kegunaan>Antiinflamasi</obat_herbal2:kegunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antitusif -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antitusif">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:kegunaan>Antitusif</obat_herbal2:kegunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#batuk -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#batuk">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:nama_penyakit>Batuk Kering dan berdahak</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_kapsul -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_kapsul">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bentuk"/>
+        <obat_herbal2:bentuk_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal"/>
+        <obat_herbal2:berbentuk>Kapsul</obat_herbal2:berbentuk>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_minyak -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_minyak">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bentuk"/>
+        <obat_herbal2:bentuk_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:berbentuk>Minyak</obat_herbal2:berbentuk>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_serbuk -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_serbuk">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bentuk"/>
+        <obat_herbal2:bentuk_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:bentuk_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:berbentuk>Serbuk</obat_herbal2:berbentuk>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_sirup -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_sirup">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bentuk"/>
+        <obat_herbal2:bentuk_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:bentuk_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:bentuk_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:bentuk_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:bentuk_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:berbentuk>Sirup</obat_herbal2:berbentuk>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_tablet -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_tablet">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Bentuk"/>
+        <obat_herbal2:bentuk_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:berbentuk>Tablet</obat_herbal2:berbentuk>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#biji_adas -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#biji_adas">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Biji"/>
+        <obat_herbal2:bahan_dari_biji rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#menthol"/>
+        <obat_herbal2:nama_biji>Adas</obat_herbal2:nama_biji>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#biji_fenugreek -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#biji_fenugreek">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Biji"/>
+        <obat_herbal2:bahan_dari_biji rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:nama_biji>Fenugreek</obat_herbal2:nama_biji>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#biji_kemiri -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#biji_kemiri">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Biji"/>
+        <obat_herbal2:bahan_dari_biji rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:nama_senyawa>Kemiri</obat_herbal2:nama_senyawa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#buah_mengkudu -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#buah_mengkudu">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Buah"/>
+        <obat_herbal2:bahan_dari_buah rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:nama_buah>Mengkudu</obat_herbal2:nama_buah>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_jambu_biji -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_jambu_biji">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Daun"/>
+        <obat_herbal2:bahan_dari_daun rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal"/>
+        <obat_herbal2:nama_daun>Jambu Biji</obat_herbal2:nama_daun>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_mint -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_mint">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Daun"/>
+        <obat_herbal2:bahan_dari_daun rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:bahan_dari_daun rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:nama_daun>Mint</obat_herbal2:nama_daun>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_salam -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_salam">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Daun"/>
+        <obat_herbal2:bahan_dari_daun rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:nama_daun>Salam</obat_herbal2:nama_daun>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_sambiloto -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_sambiloto">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Daun"/>
+        <obat_herbal2:bahan_dari_daun rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:nama_daun>Sambiloto</obat_herbal2:nama_daun>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <obat_herbal2:bentuknya rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_serbuk"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antidiabetik"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pengeringan"/>
+        <obat_herbal2:diolah_menjadi rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#suplemen"/>
+        <obat_herbal2:disajikan_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dicampur_dengan_air"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kering"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sejuk"/>
+        <obat_herbal2:memiliki_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_sedang"/>
+        <obat_herbal2:mempunyai_efek rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#hipoglikemia"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#galaktomanan"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetes"/>
+        <obat_herbal2:terbuat_dari_biji rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#biji_fenugreek"/>
+        <obat_herbal2:nama_obat>Diabetasol</obat_herbal2:nama_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetes -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetes">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:nama_penyakit>Diabetes</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <obat_herbal2:bentuknya rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_kapsul"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antidiare"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekstraksi"/>
+        <obat_herbal2:diolah_menjadi rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#obat_herbal_modern"/>
+        <obat_herbal2:disajikan_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ditelan"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kering"/>
+        <obat_herbal2:memiliki_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_sedang"/>
+        <obat_herbal2:mempunyai_efek rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sembelit"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tanin"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diare"/>
+        <obat_herbal2:terbuat_dari_daun rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_jambu_biji"/>
+        <obat_herbal2:nama_obat>Diapet Herbal</obat_herbal2:nama_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diare -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diare">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal"/>
+        <obat_herbal2:nama_penyakit>Diare</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dicampur_dengan_air -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dicampur_dengan_air">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penggunaan"/>
+        <obat_herbal2:cara_penyajian_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:cara_penyajian_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:cara_penyajian_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:cara_penggunaan>Dicampur dengan Air</obat_herbal2:cara_penggunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diminum_langsung -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diminum_langsung">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penggunaan"/>
+        <obat_herbal2:cara_penyajian_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:cara_penyajian_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:cara_penyajian_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:cara_penggunaan>Diminum Langsung</obat_herbal2:cara_penggunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dioleskan -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dioleskan">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penggunaan"/>
+        <obat_herbal2:cara_penyajian_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:cara_penggunaan>Dioleskan</obat_herbal2:cara_penggunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ditelan -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ditelan">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penggunaan"/>
+        <obat_herbal2:cara_penyajian_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal"/>
+        <obat_herbal2:cara_penyajian_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:cara_penggunaan>Ditelan</obat_herbal2:cara_penggunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diteteskan_ke_air -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diteteskan_ke_air">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penggunaan"/>
+        <obat_herbal2:cara_penyajian_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:cara_penggunaan>Diteteskan ke dalam air</obat_herbal2:cara_penggunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_rendah -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_rendah">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Dosis_Penggunaan"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:merupakan_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:dosis>Rendah</obat_herbal2:dosis>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_sedang -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_sedang">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Dosis_Penggunaan"/>
+        <obat_herbal2:merupakan_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:merupakan_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal"/>
+        <obat_herbal2:merupakan_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:merupakan_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:merupakan_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:merupakan_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:merupakan_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:merupakan_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:merupakan_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:dosis>Sedang</obat_herbal2:dosis>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekspektoran -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekspektoran">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:kegunaan>Ekspektoran</obat_herbal2:kegunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekstraksi -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekstraksi">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Cara_Pengolahan"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:deskripsi_pengolahan>Mengambil zat aktif dari bahan herbal menggunakan pelarut seperti air, etanol, atau campuran lainnya. Metode yang digunakan direbus, maserasi, atau sonikasi.</obat_herbal2:deskripsi_pengolahan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#fenol -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#fenol">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:nama_senyawa>Fenol</obat_herbal2:nama_senyawa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#fermentasi -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#fermentasi">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Cara_Pengolahan"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:deskripsi_pengolahan>Menggunakan mikroorganisme untuk meningkatkan efektivitas bahan herbal. Jenis mikroorganisme yang digunakan berupa ragi, bakteri, dan lain sebagainya.</obat_herbal2:deskripsi_pengolahan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#flavonoid -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#flavonoid">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:nama_senyawa>Flavonoid</obat_herbal2:nama_senyawa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#galaktomanan -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#galaktomanan">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:nama_senyawa>Galaktomanan</obat_herbal2:nama_senyawa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_fungsi_hati -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_fungsi_hati">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:nama_penyakit>Gangguan fungsi hati</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_imunitas -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_imunitas">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:nama_penyakit>Gangguan imunitas</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_lambung -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_lambung">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Efek_Samping"/>
+        <obat_herbal2:efek_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:efek_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:efek_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:efek_samping_obat>Gangguan Lambung</obat_herbal2:efek_samping_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_pencernaan -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_pencernaan">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:nama_penyakit>Gangguan Pencernaan</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gingerol -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gingerol">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:nama_senyawa>Gingerol</obat_herbal2:nama_senyawa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#hepatoprotektor -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#hepatoprotektor">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:kegunaan>Hepatoprotektor</obat_herbal2:kegunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <obat_herbal2:bentuknya rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_serbuk"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#hepatoprotektor"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekstraksi"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pengeringan"/>
+        <obat_herbal2:diolah_menjadi rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minuman_herbal"/>
+        <obat_herbal2:disajikan_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dicampur_dengan_air"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sejuk"/>
+        <obat_herbal2:memiliki_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_sedang"/>
+        <obat_herbal2:mempunyai_efek rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_lambung"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kurkumin"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_fungsi_hati"/>
+        <obat_herbal2:terbuat_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#temulawak"/>
+        <obat_herbal2:nama_obat>Herbadrink Sari Temulawak</obat_herbal2:nama_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <obat_herbal2:bentuknya rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_tablet"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#penambah_nafsu_makan"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekstraksi"/>
+        <obat_herbal2:diolah_menjadi rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#obat_herbal_modern"/>
+        <obat_herbal2:disajikan_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ditelan"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kering"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sejuk"/>
+        <obat_herbal2:memiliki_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_sedang"/>
+        <obat_herbal2:mempunyai_efek rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mual"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kurkumin"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_pencernaan"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nafsu_makan_menurun"/>
+        <obat_herbal2:terbuat_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#temulawak"/>
+        <obat_herbal2:nama_obat>Herbafit Cucurma Plus</obat_herbal2:nama_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <obat_herbal2:bentuknya rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_sirup"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antitusif"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekspektoran"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekstraksi"/>
+        <obat_herbal2:diolah_menjadi rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#obat_herbal_modern"/>
+        <obat_herbal2:disajikan_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diminum_langsung"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kering"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sejuk"/>
+        <obat_herbal2:memiliki_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_sedang"/>
+        <obat_herbal2:mempunyai_efek rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_lambung"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gingerol"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#menthol"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#batuk"/>
+        <obat_herbal2:terbuat_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jahe"/>
+        <obat_herbal2:terbuat_dari_daun rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_mint"/>
+        <obat_herbal2:nama_obat>HerbaKOF</obat_herbal2:nama_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#hipoglemik_alami -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#hipoglemik_alami">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:kegunaan>Hipoglemik Alami</obat_herbal2:kegunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#hipoglikemia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#hipoglikemia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Efek_Samping"/>
+        <obat_herbal2:efek_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:efek_samping_obat>Hipoglikemia</obat_herbal2:efek_samping_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#imunomodulator -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#imunomodulator">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:kegunaan>Imunomodulator</obat_herbal2:kegunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#infeksi_ringan -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#infeksi_ringan">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:nama_penyakit>Infeksi Ringan</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jahe -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jahe">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Akar"/>
+        <obat_herbal2:bahan_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:bahan_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:bahan_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:nama_akar>Jahe</obat_herbal2:nama_akar>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Jenis"/>
+        <obat_herbal2:olahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:olahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:olahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:jenis_obat>Jamu tradisional</obat_herbal2:jenis_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <obat_herbal2:bahan_dari_daun rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:bentuknya rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_sirup"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#hipoglemik_alami"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekstraksi"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#fermentasi"/>
+        <obat_herbal2:diolah_menjadi rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu"/>
+        <obat_herbal2:disajikan_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diminum_langsung"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sejuk"/>
+        <obat_herbal2:memiliki_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_sedang"/>
+        <obat_herbal2:mempunyai_efek rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pusing"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#andrografolid"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetes"/>
+        <obat_herbal2:terbuat_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sambiloto"/>
+        <obat_herbal2:terbuat_dari_buah rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#buah_mengkudu"/>
+        <obat_herbal2:terbuat_dari_daun rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_sambiloto"/>
+        <obat_herbal2:nama_obat>Jamu Gula Darah</obat_herbal2:nama_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <obat_herbal2:bentuknya rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_sirup"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#analgesik"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekstraksi"/>
+        <obat_herbal2:diolah_menjadi rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu"/>
+        <obat_herbal2:disajikan_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dicampur_dengan_air"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kering"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sejuk"/>
+        <obat_herbal2:memiliki_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_sedang"/>
+        <obat_herbal2:mempunyai_efek rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_lambung"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gingerol"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kurkumin"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nyeri_sendi"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pegal"/>
+        <obat_herbal2:terbuat_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jahe"/>
+        <obat_herbal2:terbuat_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kunyit"/>
+        <obat_herbal2:terbuat_dari_daun rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_salam"/>
+        <obat_herbal2:nama_obat>Jamu Pegal Linu</obat_herbal2:nama_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kering -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kering">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penyimpanan"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:cara_menyimpan>Pada Tempat Kering</obat_herbal2:cara_menyimpan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kunyit -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kunyit">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Akar"/>
+        <obat_herbal2:bahan_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:nama_akar>Kunyit</obat_herbal2:nama_akar>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kurkumin -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kurkumin">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:nama_senyawa>Kurkumin</obat_herbal2:nama_senyawa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#masuk_angin -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#masuk_angin">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:nama_penyakit>Masuk Angin</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#menthol -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#menthol">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:nama_senyawa>Menthol</obat_herbal2:nama_senyawa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minuman_herbal -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minuman_herbal">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Jenis"/>
+        <obat_herbal2:olahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:jenis_obat>Minuman herbal</obat_herbal2:jenis_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_herbal -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_herbal">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Jenis"/>
+        <obat_herbal2:olahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:jenis_obat>Minyak herbal</obat_herbal2:jenis_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <obat_herbal2:bentuknya rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_minyak"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#analgesik"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antiinflamasi"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekstraksi"/>
+        <obat_herbal2:diolah_menjadi rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_herbal"/>
+        <obat_herbal2:disajikan_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dioleskan"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sejuk"/>
+        <obat_herbal2:memiliki_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_sedang"/>
+        <obat_herbal2:mempunyai_efek rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#alergi"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sineol"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nyeri_otot"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pegal"/>
+        <obat_herbal2:terbuat_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#temulawak"/>
+        <obat_herbal2:terbuat_dari_biji rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#biji_kemiri"/>
+        <obat_herbal2:nama_obat>Minyak Kutus-Kutus</obat_herbal2:nama_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mual -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#mual">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Efek_Samping"/>
+        <obat_herbal2:efek_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:efek_samping_obat>Mual</obat_herbal2:efek_samping_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nafsu_makan_menurun -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nafsu_makan_menurun">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:nama_penyakit>Nafsu Makan menurun</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nyeri_otot -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nyeri_otot">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:nama_penyakit>Nyeri Otot</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nyeri_sendi -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#nyeri_sendi">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:nama_penyakit>Nyeri Sendi</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#obat_herbal_modern -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#obat_herbal_modern">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Jenis"/>
+        <obat_herbal2:olahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal"/>
+        <obat_herbal2:olahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:olahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:jenis_obat>Obat Herbal Modern</obat_herbal2:jenis_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pegal -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pegal">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:nama_penyakit>Pegal-pegal</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#penambah_nafsu_makan -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#penambah_nafsu_makan">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Fungsi"/>
+        <obat_herbal2:fungsi_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:kegunaan>Penambah Nafsu Makan</obat_herbal2:kegunaan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pengeringan -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pengeringan">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Cara_Pengolahan"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:pengolahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:deskripsi_pengolahan>Proses mengurangi kadar air dalam bahan herbal untuk memperpanjang masa simpan, dengan cara dijemur, di oven, atau pengeringan dengan vacuum dengan durasi waktu pengeringan bervariasi tergantung bahan.</obat_herbal2:deskripsi_pengolahan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#perut_kembung -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#perut_kembung">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Indikasi_Penyakit"/>
+        <obat_herbal2:diobati_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin"/>
+        <obat_herbal2:nama_penyakit>Perut Kembung</obat_herbal2:nama_penyakit>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <obat_herbal2:bentuknya rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_sirup"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#antibiotik"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#imunomodulator"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekstraksi"/>
+        <obat_herbal2:diolah_menjadi rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#suplemen"/>
+        <obat_herbal2:disajikan_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diteteskan_ke_air"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kering"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sejuk"/>
+        <obat_herbal2:memiliki_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_rendah"/>
+        <obat_herbal2:mempunyai_efek rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#alergi"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#fenol"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#flavonoid"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gangguan_imunitas"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#infeksi_ringan"/>
+        <obat_herbal2:nama_obat>Propolis Platinum</obat_herbal2:nama_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pusing -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#pusing">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Efek_Samping"/>
+        <obat_herbal2:efek_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:efek_samping_obat>Pusing</obat_herbal2:efek_samping_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sambiloto -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sambiloto">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Akar"/>
+        <obat_herbal2:bahan_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:nama_akar>Sambiloto</obat_herbal2:nama_akar>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sejuk -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sejuk">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Metode_Penyimpanan"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbakof"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_gula_darah"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu_pegal_linu"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:merupakan_tempat_penyimpanan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:cara_menyimpan>Pada Tempat yang Sejuk</obat_herbal2:cara_menyimpan>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sembelit -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sembelit">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Efek_Samping"/>
+        <obat_herbal2:efek_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal"/>
+        <obat_herbal2:efek_samping_obat>Sembelit</obat_herbal2:efek_samping_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sineol -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#sineol">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:nama_senyawa>Sineol</obat_herbal2:nama_senyawa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#suplemen -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#suplemen">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Jenis"/>
+        <obat_herbal2:olahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diabetasol"/>
+        <obat_herbal2:olahan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#propolis_platinum"/>
+        <obat_herbal2:jenis_obat>Suplemen Herbal</obat_herbal2:jenis_obat>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tanin -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tanin">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Senyawa_Aktif"/>
+        <obat_herbal2:kandungan_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diapet_herbal"/>
+        <obat_herbal2:nama_senyawa>Tanin</obat_herbal2:nama_senyawa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#temulawak -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#temulawak">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Akar"/>
+        <obat_herbal2:bahan_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbadrink_sari_temulawak"/>
+        <obat_herbal2:bahan_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:bahan_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#minyak_kutus2"/>
+        <obat_herbal2:bentuk_dari rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#herbafit_curcuma_plus"/>
+        <obat_herbal2:nama_akar>Temulawak</obat_herbal2:nama_akar>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#tolak_angin">
+        <rdf:type rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#Obat_Herbal"/>
+        <obat_herbal2:bentuknya rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#bentuk_sirup"/>
+        <obat_herbal2:berfungsi_sebagai rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#imunomodulator"/>
+        <obat_herbal2:diolah_dengan_cara rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#ekstraksi"/>
+        <obat_herbal2:diolah_menjadi rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jamu"/>
+        <obat_herbal2:disajikan_dengan rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#diminum_langsung"/>
+        <obat_herbal2:disimpan_pada_tempat rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#kering"/>
+        <obat_herbal2:memiliki_dosis rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#dosis_sedang"/>
+        <obat_herbal2:mempunyai_efek rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#alergi"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#gingerol"/>
+        <obat_herbal2:mengandung rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#menthol"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#masuk_angin"/>
+        <obat_herbal2:mengobati rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#perut_kembung"/>
+        <obat_herbal2:terbuat_dari_akar rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#jahe"/>
+        <obat_herbal2:terbuat_dari_biji rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#biji_adas"/>
+        <obat_herbal2:terbuat_dari_daun rdf:resource="http://www.semanticweb.org/hariel/ontologies/2024/8/obat_herbal2#daun_mint"/>
+        <obat_herbal2:nama_obat>Tolak Angin</obat_herbal2:nama_obat>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+
